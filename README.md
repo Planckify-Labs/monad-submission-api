@@ -1,128 +1,85 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# TakumiPay Backend API — Monad Metropolis Hackathon 2026
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> **NestJS Payment Orchestration, EIP-712 Merchant Quoting & Monad Network Rails**  
+> *Orchestrates cross-border remittance, merchant intent settlement, and dynamic blockchain configurations for TakumiPay.*
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- **Team:** Planckify Labs
+- **Track Entered:** Track 02 — Consumer Products & Payments
+- **Framework:** NestJS, Prisma ORM, PostgreSQL, Redis / Valkey
+- **License:** [GNU General Public License v3.0 (GPLv3)](./LICENSE)
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Overview
 
-## Project setup
+The TakumiPay Backend API acts as the central orchestration engine connecting consumer mobile clients to on-chain settlement rails, fiat gateways, and merchant acquirers.
 
+For the **Monad Metropolis Hackathon**, the API provides:
+1. **Dynamic Monad Blockchain Catalogue:** Serves Monad Mainnet (`143`) and Monad Testnet (`10143`) network configurations, RPC routes, and block explorer endpoints via `GET /blockchains`.
+2. **Agora AUSD Stablecoin Management:** Seeds and governs AUSD token parameters (`0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a`), decimals, and payment eligibility flags.
+3. **EIP-712 Merchant Quote Signer (`QuoteSignerService`):** Deterministically computes and cryptographically signs payment quotes verified on-chain by `TakumiPay.sol`'s `processMerchantPayment`.
+4. **Non-Blocking Settlement State Machine:** Asynchronously processes and tracks on-chain Monad transactions from broadcast to confirmation.
+
+---
+
+## Monad Configuration & Deployed Contract Integration
+
+- **Monad Mainnet (Chain ID `143`):**
+  - TakumiPay Proxy: `0x479B0843C3e0627f36551660506dEd5b349Fa968`
+  - Agora AUSD: `0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a` (6 decimals)
+  - Native Gas: `MON` (18 decimals)
+- **Monad Testnet (Chain ID `10143`):**
+  - TakumiPay Proxy: `0x9EEC5aD4FC092fD468A8114007e541238F4Ba5ee`
+  - MockAUSD Stand-In: `0x1aC593085Fa34c651E805085da4b2cabAC676F99` (6 decimals)
+
+---
+
+## Metropolis Hackathon Build & Originality Disclosure
+
+*(Mandatory disclosure under Section 4.1 Clause 4 of Metropolis Hackathon Rules)*
+
+- **Pre-Existing Foundation (Prior to September 1, 2026):**
+  Core NestJS API architecture, Prisma schema, auth middleware, and multi-chain RPC proxy integration.
+- **Hackathon Additions & Refinements (September 18 – September 26, 2026):**
+  - Monad Mainnet (`143`) and Testnet (`10143`) network and token seeds (`src/scripts/prisma/seed.ts`).
+  - Agora AUSD token integration with payment enable flags.
+  - EIP-712 domain separator binding for Monad settlement validation in `intents.service.ts`.
+  - Non-blocking payment verification polling endpoints.
+- **AI Tools Disclosure:**
+  Drafted and verified with assistance from Claude and Gemini.
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 20+
+- `pnpm`
+- PostgreSQL & Redis (or Docker)
+
+### Installation
 ```bash
-$ pnpm install
+# Install dependencies
+pnpm install
+
+# Run database migrations
+pnpm prisma migrate deploy
+
+# Seed blockchain and token catalogues (including Monad and AUSD)
+pnpm prisma db seed
 ```
 
-## Database Setup
-
-First, connect to your PostgreSQL server:
+### Running the API
 ```bash
-$ psql -U postgres
+# Start development server
+pnpm start:dev
+
+# Run tests
+pnpm test
 ```
 
-Then run the following commands:
-```bash
-CREATE ROLE "takumipay" WITH LOGIN PASSWORD 'takumipay-123';
-ALTER ROLE "takumipay" CREATEDB;
-CREATE DATABASE takumipay;
-GRANT ALL PRIVILEGES ON DATABASE takumipay TO "takumipay";
-ALTER DATABASE takumipay OWNER TO "takumipay";
-\c takumipay
-GRANT ALL ON SCHEMA public TO "takumipay";
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "takumipay";
-```
-
-Add the following to your `.env` file:
-```bash
-DATABASE_URL=postgresql://takumipay:takumipay-123@localhost:5432/takumipay
-```
-
-## Migrate from ESLint to Biome
-
-```bash
-$ pnpm biome migrate eslint --write --include-inspired
-```
-
-## Compile and run the project
-
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the [GNU General Public License v3.0 (GPLv3)](./LICENSE).
