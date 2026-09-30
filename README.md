@@ -39,7 +39,7 @@ For the **Monad Metropolis Hackathon**, the API provides:
 *(Mandatory disclosure under Section 4.1 Clause 4 of Metropolis Hackathon Rules)*
 
 - **Pre-Existing Foundation (Prior to September 1, 2026):**
-  Core NestJS API architecture, Prisma schema, auth middleware, and multi-chain RPC proxy integration.
+  Core NestJS API architecture, Prisma schema, auth middleware, and secure RPC proxy integration.
 - **Hackathon Additions & Refinements (September 18 – September 26, 2026):**
   - Monad Mainnet (`143`) and Testnet (`10143`) network and token seeds (`src/scripts/prisma/seed.ts`).
   - Agora AUSD token integration with payment enable flags.
